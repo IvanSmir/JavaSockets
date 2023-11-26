@@ -4,13 +4,13 @@ package com.ivansm.sockets.models;
 public class Posts {
 
     int id;
-    int userID;
+    int userId;
     String title;
     String body;
 
     public Posts(int i, int ic, String t, String b) {
         this.id = i;
-        this.userID = ic;
+        this.userId = ic;
         this.title = t;
         this.body = b;
     }
