@@ -73,6 +73,8 @@ public class Client {
             clase = User.class;
         } else if (request.contains("posts")) {
             clase = Posts.class;
+        } else{
+            clase = request.getClass();
         }
 
         if (request.contains("XML")) {
@@ -84,10 +86,14 @@ public class Client {
         } else {
             if (request.contains("/")) {
                 jsonToObject(response, clase);
-            } else {
+            } else if(request.contains("users")){
                 jsonToTable(response, clase);
+            } else{
+                System.out.println(response);
             }
+
         }
+        
     }
 
     private static void jsonToObject(String response, Class<?> clase) {

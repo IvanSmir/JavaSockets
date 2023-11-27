@@ -55,6 +55,7 @@ public class Server {
             String[] parts = request.split(" ");
             if (parts.length < 2) {
                 out.println("Solicitud no válida.");
+                out.println("END");
                 return;
             }
 
@@ -64,6 +65,7 @@ public class Server {
 
             if (!method.equals("GET")) {
                 out.println("Solo se admiten peticiones GET.");
+                out.println("END");
                 return;
             }
 
@@ -73,6 +75,7 @@ public class Server {
                 handlePostsRequest(resource, format, out);
             } else {
                 out.println("Recurso no encontrado.");
+                out.println("END");
             }
         }
 
@@ -85,6 +88,7 @@ public class Server {
             sendResponse(user, format, out);
         } else {
             out.println("Usuario no encontrado.");
+            out.println("END");
         }
     } else {
         String usersData = fetchDataFromUrl(url + "users");
@@ -94,6 +98,7 @@ public class Server {
             sendResponse(users, format, out);
         } else {
             out.println("Error al obtener datos de usuarios.");
+            out.println("END");
         }
     }
 }
@@ -107,6 +112,7 @@ private void handlePostsRequest(String resource, String format, PrintWriter out)
             sendResponse(post, format, out);
         } else {
             out.println("Post no encontrado.");
+            out.println("END");
         }
     } else {
         String postsData = fetchDataFromUrl(url + "posts");
@@ -116,6 +122,7 @@ private void handlePostsRequest(String resource, String format, PrintWriter out)
             sendResponse(posts, format, out);
         } else {
             out.println("Error al obtener datos de posts.");
+            out.println("END");
         }
     }
 }
