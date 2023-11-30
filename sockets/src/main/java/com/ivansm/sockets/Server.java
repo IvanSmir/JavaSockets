@@ -18,7 +18,6 @@ public class Server {
     private static List<Slaves> servidoresEsclavos = new ArrayList<>();
     private static int ultimoServidorUtilizado = -1;
 
-
     public static void main(String[] args) throws IOException {
         try (ServerSocket serverSocket = new ServerSocket(0)) {
             System.out.println("Iniciando Server en puerto " + serverSocket.getLocalPort());
@@ -67,8 +66,8 @@ public class Server {
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 String line;
-                
-                    while ((line = in.readLine()) != null) {
+
+                while ((line = in.readLine()) != null) {
                     if (line.contains("Esclavo")) {
                         Slaves slave = new Slaves(servidoresEsclavos.size() + 1, this);
                         servidoresEsclavos.add(slave);
@@ -78,8 +77,7 @@ public class Server {
                         handleRequest(line, out);
                     }
                 }
-                
-                
+
             } catch (IOException e) {
                 System.out.println("Error al manejar la conexión del cliente: " + e.getMessage());
             }
@@ -88,70 +86,71 @@ public class Server {
         private void handleRequest(String request, PrintWriter out) {
             Boolean activos = false;
             for (Slaves s : servidoresEsclavos) {
-                        try {
-                            PrintWriter outServer = s.out;
+                try {
+                    PrintWriter outServer = s.out;
 
-                            BufferedReader in = s.in;
-                            outServer.println("ESTADO");
-                            String response = in.readLine();
-                            if (response == null) {
-                                s.conexion = false;
-                            } else {
-                                s.conexion = true;
-                                activos = true;
-                            }
-                        } catch (IOException e) {
-                            s.conexion = false;
-                        }
+                    BufferedReader in = s.in;
+                    outServer.println("ESTADO");
+                    String response = in.readLine();
+                    if (response == null) {
+                        s.conexion = false;
+                    } else {
+                        s.conexion = true;
+                        activos = true;
                     }
+                } catch (IOException e) {
+                    s.conexion = false;
+                }
+            }
             if (!request.contains("estado")) {
                 if (!servidoresEsclavos.isEmpty() && activos) {
-                        if (ultimoServidorUtilizado >= servidoresEsclavos.size()-1) {
-                            ultimoServidorUtilizado = -1;
-                        }
-                        for (int i = ultimoServidorUtilizado+1; i<servidoresEsclavos.size(); i++) {
-                            Slaves s = servidoresEsclavos.get(i);
-                            if (!s.estado  && s.conexion ) {
-                                BufferedReader in = s.in;
-                                PrintWriter outServer = s.out;
-                                s.estado = true;
-                                try {
-                                    outServer.println(request);
-                                    String response = in.readLine();
-                                    if (response == null) {
-                                        System.out.println("El servidor cerró la conexión.");
+                    if (ultimoServidorUtilizado >= servidoresEsclavos.size() - 1) {
+                        ultimoServidorUtilizado = -1;
+                    }
+                    for (int i = ultimoServidorUtilizado + 1; i < servidoresEsclavos.size(); i++) {
+                        Slaves s = servidoresEsclavos.get(i);
+                        if (!s.estado && s.conexion) {
+                            BufferedReader in = s.in;
+                            PrintWriter outServer = s.out;
+                            s.estado = true;
+                            try {
+                                outServer.println(request);
+                                String response = in.readLine();
+                                if (response == null) {
+                                    System.out.println("El servidor cerró la conexión.");
+                                    break;
+                                }
+                                StringBuilder responseBuilder = new StringBuilder();
+                                responseBuilder.append(response);
+                                while ((response = in.readLine()) != null) {
+                                    if (response.equals("END")) {
                                         break;
                                     }
-                                    StringBuilder responseBuilder = new StringBuilder();
                                     responseBuilder.append(response);
-                                    while ((response = in.readLine()) != null) {
-                                        if (response.equals("END")) {
-                                            break;
-                                        }
-                                        responseBuilder.append(response);
 
-                                    }
-                                    String responseFinal = responseBuilder.toString();
-                                    sendResponse(responseFinal, out);
-                                    s.estado = false;
-                                    s.pedidos++;
-                                } catch (IOException e) {
-                                    System.out.println("Error al manejar la conexión del esclavo: " + e.getMessage()+"\n");
-                                    e.printStackTrace();
                                 }
-                                ultimoServidorUtilizado++;
-                                return;
+                                String responseFinal = responseBuilder.toString();
+                                sendResponse(responseFinal, out);
+                                s.estado = false;
+                                s.pedidos++;
+                            } catch (IOException e) {
+                                System.out
+                                        .println("Error al manejar la conexión del esclavo: " + e.getMessage() + "\n");
+                                e.printStackTrace();
                             }
                             ultimoServidorUtilizado++;
+                            return;
                         }
-                        
+                        ultimoServidorUtilizado++;
+                    }
+
                 }
                 handleRequest2(request, out);
             } else {
                 out.println("Lista de Esclavos: ");
                 for (Slaves slaves : servidoresEsclavos) {
                     out.println("Esclavo id: " + slaves.id + ", Peticiones: " + slaves.pedidos + ", Estado: "
-                            + (slaves.conexion? "Conectado":"Desconectado") + "\n");
+                            + (slaves.conexion ? "Conectado" : "Desconectado") + "\n");
                 }
                 out.println("END");
             }

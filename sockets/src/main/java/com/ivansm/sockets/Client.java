@@ -1,4 +1,5 @@
 package com.ivansm.sockets;
+
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -47,12 +48,12 @@ public class Client {
                     break;
                 }
                 StringBuilder responseBuilder = new StringBuilder();
-                responseBuilder.append(response+"\n");
+                responseBuilder.append(response + "\n");
                 while ((response = in.readLine()) != null) {
                     if (response.equals("END")) {
                         break;
                     }
-                    responseBuilder.append(response+"\n");
+                    responseBuilder.append(response + "\n");
                 }
                 String responseFinal = responseBuilder.toString();
                 processResponse(line, responseFinal);
@@ -73,7 +74,7 @@ public class Client {
             clase = User.class;
         } else if (request.contains("posts")) {
             clase = Posts.class;
-        } else{
+        } else {
             clase = request.getClass();
         }
 
@@ -86,14 +87,14 @@ public class Client {
         } else {
             if (request.contains("/")) {
                 jsonToObject(response, clase);
-            } else if(request.contains("users")){
+            } else if (request.contains("users")) {
                 jsonToTable(response, clase);
-            } else{
+            } else {
                 System.out.println(response);
             }
 
         }
-        
+
     }
 
     private static void jsonToObject(String response, Class<?> clase) {

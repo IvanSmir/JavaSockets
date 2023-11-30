@@ -10,7 +10,7 @@ import com.google.gson.reflect.TypeToken;
 import com.ivansm.sockets.models.*;
 import com.thoughtworks.xstream.XStream;
 
- public class Eslave {
+public class Eslave {
     private static String url = "https://jsonplaceholder.typicode.com/";
     private static final Gson gson = new Gson();
 
@@ -32,21 +32,21 @@ import com.thoughtworks.xstream.XStream;
 
             System.out.println("Conectado al proxy: " + socket.getRemoteSocketAddress());
             out.println("Esclavo Conectado");
-            
+
             String request = null;
 
             while (true) {
                 request = in.readLine();
-                if(!(request == null)){
+                if (!(request == null)) {
                     System.out.println("Peticion recibida");
                     if (request.contains("ESTADO")) {
                         out.println(true);
-                    }else{
-                    handleRequest(request, out);
+                    } else {
+                        handleRequest(request, out);
 
                     }
                 }
-            }   
+            }
 
         } catch (NumberFormatException e) {
             System.out.println("Puerto no válido: " + e.getMessage());
@@ -135,7 +135,7 @@ import com.thoughtworks.xstream.XStream;
         }
     }
 
-    private  static String fetchDataFromUrl(String urlString) {
+    private static String fetchDataFromUrl(String urlString) {
         StringBuilder sb = new StringBuilder();
         try {
             URI uri = new URI(urlString);
@@ -155,7 +155,7 @@ import com.thoughtworks.xstream.XStream;
     }
 
     private static void sendResponse(Object obj, String format, PrintWriter out) {
-        
+
         String response = format.equals("XML") ? convertToXML(obj) : convertToJSON(obj);
         out.println(response);
         out.println("END");
