@@ -105,19 +105,11 @@ public class Server {
                         }
                     }
             if (!request.contains("estado")) {
-                System.out.println(activos);
                 if (!servidoresEsclavos.isEmpty() && activos) {
-                        System.out.println("prueba2");
-                        System.out.println(ultimoServidorUtilizado);
-                        System.out.println(servidoresEsclavos.size());
-                        System.out.println("prueba");
                         if (ultimoServidorUtilizado >= servidoresEsclavos.size()-1) {
-                            System.out.println("entre");
                             ultimoServidorUtilizado = -1;
                         }
-                        System.out.println(ultimoServidorUtilizado);
                         for (int i = ultimoServidorUtilizado+1; i<servidoresEsclavos.size(); i++) {
-                            System.out.println(i);
                             Slaves s = servidoresEsclavos.get(i);
                             if (!s.estado  && s.conexion ) {
                                 BufferedReader in = s.in;
@@ -153,7 +145,6 @@ public class Server {
                             ultimoServidorUtilizado++;
                         }
                         
-                    System.out.println("xd3");
                 }
                 handleRequest2(request, out);
             } else {
@@ -266,7 +257,6 @@ public class Server {
 
         private void sendResponse(Object obj, String format, PrintWriter out) {
             String response = format.equals("XML") ? convertToXML(obj) : convertToJSON(obj);
-            System.out.println(response);
             out.println(response);
             out.println("END");
         }
