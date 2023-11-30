@@ -16,9 +16,11 @@ public class Server {
     private static String url = "https://jsonplaceholder.typicode.com/";
     private static final Gson gson = new Gson();
     private static List<Slaves> servidoresEsclavos = new ArrayList<>();
+    private static int ultimoServidorUtilizado = -1;
+
 
     public static void main(String[] args) throws IOException {
-        try (ServerSocket serverSocket = new ServerSocket(0)) {
+        try (ServerSocket serverSocket = new ServerSocket(7777)) {
             System.out.println("Iniciando Server en puerto " + serverSocket.getLocalPort());
             while (true) {
                 Socket socket = serverSocket.accept();
@@ -104,9 +106,20 @@ public class Server {
                         }
                     }
             if (!request.contains("estado")) {
-                if (servidoresEsclavos.size() != 0) {
-                    if (activos) {
-                        for (Slaves s : servidoresEsclavos) {
+                System.out.println(activos);
+                if (!servidoresEsclavos.isEmpty() && activos) {
+                        System.out.println("prueba2");
+                        System.out.println(ultimoServidorUtilizado);
+                        System.out.println(servidoresEsclavos.size());
+                        System.out.println("prueba");
+                        if (ultimoServidorUtilizado >= servidoresEsclavos.size()-1) {
+                            System.out.println("entre");
+                            ultimoServidorUtilizado = -1;
+                        }
+                        System.out.println(ultimoServidorUtilizado);
+                        for (int i = ultimoServidorUtilizado+1; i<servidoresEsclavos.size(); i++) {
+                            System.out.println(i);
+                            Slaves s = servidoresEsclavos.get(i);
                             if (!s.estado  && s.conexion ) {
                                 BufferedReader in = s.in;
                                 PrintWriter outServer = s.out;
@@ -135,10 +148,12 @@ public class Server {
                                     System.out.println("Error al manejar la conexión del esclavo: " + e.getMessage()+"\n");
                                     e.printStackTrace();
                                 }
+                                ultimoServidorUtilizado++;
                                 return;
                             }
+                            ultimoServidorUtilizado++;
                         }
-                    }
+                        
                     System.out.println("xd3");
                 }
                 handleRequest2(request, out);
