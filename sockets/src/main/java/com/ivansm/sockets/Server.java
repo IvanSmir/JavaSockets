@@ -20,7 +20,7 @@ public class Server {
 
 
     public static void main(String[] args) throws IOException {
-        try (ServerSocket serverSocket = new ServerSocket(7777)) {
+        try (ServerSocket serverSocket = new ServerSocket(0)) {
             System.out.println("Iniciando Server en puerto " + serverSocket.getLocalPort());
             while (true) {
                 Socket socket = serverSocket.accept();
