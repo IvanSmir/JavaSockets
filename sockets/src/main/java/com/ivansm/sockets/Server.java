@@ -102,7 +102,6 @@ public class Server {
                             }
                         } catch (IOException e) {
                             s.conexion = false;
-                            activos = false;
                         }
                     }
             if (!request.contains("estado")) {
