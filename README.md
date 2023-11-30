@@ -1,6 +1,6 @@
 # Java Sockets Project
 
-Este proyecto implementa una aplicación cliente-servidor utilizando Java Sockets. Contiene dos componentes principales: un servidor y un cliente.
+Este proyecto implementa una aplicación cliente-servidor utilizando Java Sockets. Contiene tres componentes principales: un servidor, un cliente y la cantidad de esclavos que se levanten.
 
 ## Requisitos
 
@@ -15,7 +15,7 @@ Para obtener el proyecto, clona el repositorio utilizando el siguiente comando:
 ```bash
 git clone https://github.com/IvanSmir/JavaSockets.git
 cd JavaSockets
-git checkout parte2maven
+git checkout parte3
 ```
 
 ### Construir el Proyecto
@@ -39,10 +39,19 @@ Para iniciar el servidor, ejecuta:
 java -jar target/server-jar-with-dependencies.jar 
 ```
 
+Al conectarse el servidor dara un puerto en el cual deberas conectar los clientes y esclavos.
+
 #### Cliente
 
 Para iniciar el cliente, ejecuta:
 
 ```
-java -jar target/client-jar-with-dependencies.jar localhost:7777
+java -jar target/client-jar-with-dependencies.jar localhost:port
+```
+#### Slave
+
+Para iniciar cada esclavo, ejecuta:
+
+```
+java -jar target/slave-jar-with-dependencies.jar localhost:port
 ```

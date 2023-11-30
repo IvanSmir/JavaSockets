@@ -74,6 +74,24 @@
                         <finalName>client</finalName>
                     </configuration>
                 </execution>
+                <execution>
+                    <id>client-assembly</id>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>single</goal>
+                    </goals>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <mainClass>com.ivansm.sockets.Eslave</mainClass>
+                            </manifest>
+                        </archive>
+                        <descriptorRefs>
+                            <descriptorRef>jar-with-dependencies</descriptorRef>
+                        </descriptorRefs>
+                        <finalName>slave</finalName>
+                    </configuration>
+                </execution>
             </executions>
         </plugin>
     </plugins>

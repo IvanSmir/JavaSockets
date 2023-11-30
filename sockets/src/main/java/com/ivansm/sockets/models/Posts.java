@@ -14,7 +14,7 @@ public class Posts {
         this.title = t;
         this.body = b;
     }
-
+    @Override
     public String toString(){
         return "Post\nID: "+this.id+"\nTitulo: "+this.title+"\nCuerpo: "+this.body;
     }

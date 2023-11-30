@@ -47,15 +47,15 @@ public class Client {
                     break;
                 }
                 StringBuilder responseBuilder = new StringBuilder();
-                responseBuilder.append(response);
+                responseBuilder.append(response+"\n");
                 while ((response = in.readLine()) != null) {
                     if (response.equals("END")) {
                         break;
                     }
-                    responseBuilder.append(response);
+                    responseBuilder.append(response+"\n");
                 }
-                String response2 = responseBuilder.toString();
-                processResponse(line, response2);
+                String responseFinal = responseBuilder.toString();
+                processResponse(line, responseFinal);
             }
 
         } catch (NumberFormatException e) {

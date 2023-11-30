@@ -12,6 +12,8 @@ public class User {
         this.email = e;
         this.phone = p;
     }
+
+    @Override
     public String toString(){
         return "Usuario: \nID: " + id + ",\nName: "+ name +",\nEmail: "+ email+",\nTelefono: "+ phone;
     }
